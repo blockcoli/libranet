@@ -1,0 +1,42 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Client\" />
+    <Folder Include="Common\" />
+    <Folder Include="Constant\" />
+    <Folder Include="Crypto\" />
+    <Folder Include="Proto\" />
+    <Folder Include="Wallet\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Google.Protobuf" Version="3.9.1" />
+    <PackageReference Include="Grpc" Version="1.22.0" />
+    <PackageReference Include="Grpc.Tools" Version="1.22.0">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+    
+  <ItemGroup>
+    <Protobuf Include="Proto/access_path.proto" GrpcServices="access_path" />
+    <Protobuf Include="Proto/language_storage.proto" GrpcServices="language_storage" />
+    <Protobuf Include="Proto/ledger_info.proto" GrpcServices="ledger_info" />
+    <Protobuf Include="Proto/mempool_status.proto" GrpcServices="mempool_status" />
+    <Protobuf Include="Proto/transaction_info.proto" GrpcServices="transaction_info" />
+    <Protobuf Include="Proto/validator_public_keys.proto" GrpcServices="validator_public_keys" />        
+    <Protobuf Include="Proto/proof.proto" GrpcServices="proof" />     
+    <Protobuf Include="Proto/account_state_blob.proto" GrpcServices="account_state_blob" />       
+    <Protobuf Include="Proto/events.proto" GrpcServices="events" />            
+    <Protobuf Include="Proto/transaction.proto" GrpcServices="transaction" />
+    <Protobuf Include="Proto/validator_change.proto" GrpcServices="validator_change" />
+    <Protobuf Include="Proto/get_with_proof.proto" GrpcServices="get_with_proof" />    
+    <Protobuf Include="Proto/mempool.proto" GrpcServices="mempool" />
+    <Protobuf Include="Proto/validator_set.proto" GrpcServices="validator_set" />
+    <Protobuf Include="Proto/vm_errors.proto" GrpcServices="vm_errors" /> 
+    <Protobuf Include="Proto/admission_control.proto" GrpcServices="admission_control" />    
+  </ItemGroup>
+</Project>

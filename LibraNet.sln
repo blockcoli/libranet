@@ -1,0 +1,29 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blockcoli.Libra.Net", "Blockcoli.Libra.Net\Blockcoli.Libra.Net.csproj", "{A54BA061-6421-4918-8AEF-04CEBA0D11DE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blockcoli.Libra.Net.Test", "Blockcoli.Libra.Net.Test\Blockcoli.Libra.Net.Test.csproj", "{673B876E-1882-4C23-8772-041617560E0D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blockcoli.Libra.Net.Sample", "Blockcoli.Libra.Net.Sample\Blockcoli.Libra.Net.Sample.csproj", "{A98BA650-4565-4716-9765-0F8E8892B730}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A54BA061-6421-4918-8AEF-04CEBA0D11DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A54BA061-6421-4918-8AEF-04CEBA0D11DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A54BA061-6421-4918-8AEF-04CEBA0D11DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A54BA061-6421-4918-8AEF-04CEBA0D11DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{673B876E-1882-4C23-8772-041617560E0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{673B876E-1882-4C23-8772-041617560E0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{673B876E-1882-4C23-8772-041617560E0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{673B876E-1882-4C23-8772-041617560E0D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A98BA650-4565-4716-9765-0F8E8892B730}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A98BA650-4565-4716-9765-0F8E8892B730}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A98BA650-4565-4716-9765-0F8E8892B730}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A98BA650-4565-4716-9765-0F8E8892B730}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
