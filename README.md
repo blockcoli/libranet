@@ -8,4 +8,4 @@ Related projects
 
 - Libra Core by perfectmak : https://github.com/perfectmak/libra-core
 - Libra Core by kulapio : https://github.com/kulapio/libra-core
-- Edwards25519 by PeterWaher : https://github.com/PeterWaher/IoTGateway
+- Elliptic-curve cryptography by PeterWaher : https://github.com/PeterWaher/IoTGateway
