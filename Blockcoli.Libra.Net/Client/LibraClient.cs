@@ -43,8 +43,8 @@ namespace Blockcoli.Libra.Net.Client
         public async Task<ulong> MintWithFaucetService(string address, ulong amount)
         {
             var httpClient = new HttpClient();
-            var url = $"http://{FaucetServerHost}?amount={amount}&address={address}";
-            var response = await httpClient.GetAsync(url);
+            var url = $"http://{FaucetServerHost}?amount={amount}&address={address}";            
+            var response = await httpClient.PostAsync(url, null);
             if (response.StatusCode != HttpStatusCode.OK) throw new Exception($"Failed to query faucet service. Code: {response.StatusCode}");
             var sequenceNumber = await response.Content.ReadAsStringAsync();
             return ulong.Parse(sequenceNumber) - 1;
