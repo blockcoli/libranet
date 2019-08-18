@@ -4,6 +4,7 @@ using System.Security.Cryptography;
 using System.Text;
 using Google.Protobuf;
 using Blockcoli.Libra.Net.Crypto;
+using System.Collections.Generic;
 
 namespace Blockcoli.Libra.Net
 {
@@ -29,8 +30,16 @@ namespace Blockcoli.Libra.Net
         }
 
         public static ByteString ToByteString(this string text)
+        {            
+            return text.FromHexToBytes().ToByteString();
+        }
+
+        public static byte[] FromHexToBytes(this string hexString)
         {
-            return Encoding.UTF8.GetBytes(text).ToByteString();
+            byte[] retval = new byte[hexString.Length / 2];
+            for (int i = 0; i < hexString.Length; i += 2)
+                retval[i / 2] = Convert.ToByte(hexString.Substring(i, 2), 16);
+            return retval;
         }
 
         public static string ToTextString(this byte[] bytes)
@@ -345,6 +354,13 @@ namespace Blockcoli.Libra.Net
         public static bool EddsaVerify(this string message, byte[] signature, byte[] publicKey)
         {
             return message.ToBytes().EddsaVerify(signature, publicKey);
+        }
+
+        public static void ForEachWithIndex<T>(this IEnumerable<T> enumerable, Action<T, int> handler)
+        {
+            int idx = 0;
+            foreach (T item in enumerable)
+                handler(item, idx++);
         }
     }
 

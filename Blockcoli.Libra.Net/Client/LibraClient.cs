@@ -60,8 +60,8 @@ namespace Blockcoli.Libra.Net.Client
             var transaction = new RawTransaction();
             transaction.ExpirationTime = (ulong)Math.Floor((decimal)DateTimeOffset.Now.ToUnixTimeMilliseconds() / 1000) + 100;
             transaction.GasUnitPrice = gasUnitPrice;
-            transaction.MaxGasAmount = maxGasAmount;        
-            transaction.SequenceNumber = (await CheckBalance(sender.Address)).SingleOrDefault().SequenceNumber;
+            transaction.MaxGasAmount = maxGasAmount;  
+            transaction.SequenceNumber = (await QueryBalance(sender.Address)).ElementAt(0).SequenceNumber;
             transaction.Program = program;
             transaction.SenderAccount = sender.Address.ToByteString();
 
@@ -76,7 +76,7 @@ namespace Blockcoli.Libra.Net.Client
             return await acClient.SubmitTransactionAsync(request);
         }
 
-        public async Task<List<Wallet.AccountState>> CheckBalance(params string[] addresses)
+        public async Task<List<Wallet.AccountState>> QueryBalance(params string[] addresses)
         {
             var request = new UpdateToLatestLedgerRequest();
             foreach (var address in addresses)
