@@ -5,7 +5,7 @@ syntax = "proto3";
 
 package types;
 
-import "proto/proof.proto";
+import "Proto/proof.proto";
 
 message AccountStateBlob { bytes blob = 1; }
 

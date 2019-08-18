@@ -110,12 +110,12 @@ syntax = "proto3";
 
 package types;
 
-import "proto/access_path.proto";
-import "proto/account_state_blob.proto";
-import "proto/events.proto";
-import "proto/ledger_info.proto";
-import "proto/transaction.proto";
-import "proto/validator_change.proto";
+import "Proto/access_path.proto";
+import "Proto/account_state_blob.proto";
+import "Proto/events.proto";
+import "Proto/ledger_info.proto";
+import "Proto/transaction.proto";
+import "Proto/validator_change.proto";
 
 // -----------------------------------------------------------------------------
 // ---------------- Update to latest ledger request

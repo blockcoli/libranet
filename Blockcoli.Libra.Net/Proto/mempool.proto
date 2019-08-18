@@ -5,8 +5,8 @@ syntax = "proto3";
 
 package mempool;
 
-import "proto/transaction.proto";
-import "proto/mempool_status.proto";
+import "Proto/transaction.proto";
+import "Proto/mempool_status.proto";
 
 // -----------------------------------------------------------------------------
 // ---------------- Mempool Service Definition

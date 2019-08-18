@@ -5,10 +5,10 @@ syntax = "proto3";
 
 package admission_control;
 
-import "proto/get_with_proof.proto";
-import "proto/mempool_status.proto";
-import "proto/transaction.proto";
-import "proto/vm_errors.proto";
+import "Proto/get_with_proof.proto";
+import "Proto/mempool_status.proto";
+import "Proto/transaction.proto";
+import "Proto/vm_errors.proto";
 
 // -----------------------------------------------------------------------------
 // ---------------- Submit transaction

@@ -5,10 +5,10 @@ syntax = "proto3";
 
 package types;
 
-import "proto/access_path.proto";
-import "proto/events.proto";
-import "proto/proof.proto";
-import "proto/transaction_info.proto";
+import "Proto/access_path.proto";
+import "Proto/events.proto";
+import "Proto/proof.proto";
+import "Proto/transaction_info.proto";
 import "google/protobuf/wrappers.proto";
 
 // A generic structure that describes a transaction that a client submits

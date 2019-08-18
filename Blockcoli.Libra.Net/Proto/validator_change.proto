@@ -5,8 +5,8 @@ syntax = "proto3";
 
 package types;
 
-import "proto/events.proto";
-import "proto/ledger_info.proto";
+import "Proto/events.proto";
+import "Proto/ledger_info.proto";
 
 // This is used to prove validator changes.  When a validator is changing, it
 // triggers an event on /validator_change_account/events/sent.  To tell the

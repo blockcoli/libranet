@@ -5,7 +5,7 @@ syntax = "proto3";
 
 package types;
 
-import "proto/transaction_info.proto";
+import "Proto/transaction_info.proto";
 
 message AccumulatorProof {
   // The bitmap indicating which siblings are default. 1 means non-default and

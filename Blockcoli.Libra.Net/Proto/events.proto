@@ -9,8 +9,8 @@ syntax = "proto3";
 
 package types;
 
-import "proto/access_path.proto";
-import "proto/proof.proto";
+import "Proto/access_path.proto";
+import "Proto/proof.proto";
 
 // An event emitted from a smart contract
 message Event {
