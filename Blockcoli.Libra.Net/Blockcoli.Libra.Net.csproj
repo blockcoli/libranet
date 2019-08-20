@@ -1,7 +1,10 @@
-<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">  
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
+    <PackageId>Blockcoli.Libra.Net</PackageId>
+    <Version>0.1.0</Version>
+    <Authors>Blockcoli</Authors>
   </PropertyGroup>
 
   <ItemGroup>
