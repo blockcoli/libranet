@@ -5,6 +5,7 @@ using System.Linq;
 using System.IO;
 using System.Threading.Tasks;
 using System.Text;
+using AdmissionControl;
 
 namespace Blockcoli.Libra.Net.Cli
 {
@@ -361,7 +362,8 @@ event | ev <account_ref_id>|<account_address> <sent|received> <start_sequence_nu
             try
             {
                 var state = await client.QueryBalance(address);
-                Console.WriteLine($"Balance is: {(double)state.FirstOrDefault().Balance/1000000:N6}");
+                Console.WriteLine($"Sequence Number: {state.SequenceNumber}");
+                Console.WriteLine($"Balance is: {(double)state.Balance/1000000:N6}");
             }
             catch (Exception ex)
             {
@@ -395,9 +397,7 @@ event | ev <account_ref_id>|<account_address> <sent|received> <start_sequence_nu
             try
             {
                 var response = await client.TransferCoins(wallet.Accounts[senderAddress], receiverAddress, amount, gasUnitPrice, maxGasAmount);
-                Console.WriteLine($"AcStatus: {response.AcStatus.Message}");
-                Console.WriteLine($"MempoolStatus: {response.MempoolStatus.Message}");
-                Console.WriteLine($"VmStatus.Validation: {response.VmStatus.Validation.Message}");                
+                Console.WriteLine($"AC Status: {response.AcStatus.Code}"); 
             }
             catch (Exception ex)
             {

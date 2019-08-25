@@ -7,18 +7,18 @@ namespace Blockcoli.Libra.Net.Wallet
     public class Account
     {
         public string Address { get; private set; }
-        private Edwards25519 keyPair;        
+        public Edwards25519 KeyPair { get; private set; }    
         public ByteString Signature
         {
             get
             {
                 var bytes = Constant.HashSaltValues.RawTransactionHashSalt.ToBytes().Concat(Address.ToBytes()).ToArray();
                 var hash = new SHA3_256().ComputeVariable(bytes);
-                return keyPair.Sign(hash).ToByteString();
+                return KeyPair.Sign(hash).ToByteString();
             }
         }
 
-        public ByteString PublicKey => keyPair.PublicKey.ToByteString();
+        public ByteString PublicKey => KeyPair.PublicKey.ToByteString();
 
         public static Account FromSecretKey(byte[] secretKey)
         {
@@ -32,8 +32,8 @@ namespace Blockcoli.Libra.Net.Wallet
 
         public Account(Edwards25519 keyPair)
         {
-            this.keyPair = keyPair;
-            this.Address = new SHA3_256().ComputeVariable(this.keyPair.PublicKey).ToHexString();
+            this.KeyPair = keyPair;
+            this.Address = new SHA3_256().ComputeVariable(this.KeyPair.PublicKey).ToHexString();
         }
     }
 }

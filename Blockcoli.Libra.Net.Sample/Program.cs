@@ -65,7 +65,7 @@ namespace Blockcoli.Libra.Net.Sample
 						else Console.WriteLine("Invalid address.");
 						break;
 					case "6":
-						var accountStates = await client.QueryBalance(wallet.Accounts.Values.Select(a => a.Address).ToArray());
+						var accountStates = await client.QueryBalances(wallet.Accounts.Values.Select(a => a.Address).ToArray());
 						accountStates.ForEach(accountState => {
 							Console.WriteLine($"{(double)accountState.Balance / 1000000}");
 						});

@@ -37,6 +37,7 @@ namespace Blockcoli.Libra.Net.Wallet
             this.Balance = balance;
             this.ReceivedEventsCount = receivedEventsCount;
             this.SentEventsCount = sentEventsCount;
+            this.SequenceNumber = sequenceNumber;
             this.ReceivedEventsCount = receivedEventsCount;
             this.DelegatedWithdrawalCapability = delegatedWithdrawalCapability;
         }

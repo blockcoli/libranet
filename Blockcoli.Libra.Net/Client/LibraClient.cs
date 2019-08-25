@@ -10,6 +10,9 @@ using Grpc.Core;
 using AdmissionControl;
 using System.Collections.Generic;
 using Blockcoli.Libra.Net.Common;
+using Blockcoli.Libra.Net.Crypto;
+using Google.Protobuf;
+using System.IO;
 
 namespace Blockcoli.Libra.Net.Client
 {
@@ -50,33 +53,51 @@ namespace Blockcoli.Libra.Net.Client
             return ulong.Parse(sequenceNumber) - 1;
         }
 
-        public async Task<SubmitTransactionResponse> TransferCoins(Account sender, string recipientAddress, ulong amount, ulong gasUnitPrice, ulong maxGasAmount)
+        public async Task<SubmitTransactionResponse> TransferCoins(Account sender, string recipientAddress, ulong amount, ulong gasUnitPrice = 0, ulong maxGasAmount = 1000000)
         {
-            var program = new Program();
-            program.Code = Convert.FromBase64String(Constant.ProgamBase64Codes.PeerToPeerTxn).ToByteString();
-            program.Arguments.Add(new TransactionArgument { Type = TransactionArgument.Types.ArgType.Address, Data = recipientAddress.ToByteString() });
-            program.Arguments.Add(new TransactionArgument { Type = TransactionArgument.Types.ArgType.U64, Data = amount.ToBytes().Reverse().ToByteString() });
-
-            var transaction = new RawTransaction();
-            transaction.ExpirationTime = (ulong)Math.Floor((decimal)DateTimeOffset.Now.ToUnixTimeMilliseconds() / 1000) + 100;
-            transaction.GasUnitPrice = gasUnitPrice;
-            transaction.MaxGasAmount = maxGasAmount;  
-            transaction.SequenceNumber = (await QueryBalance(sender.Address)).ElementAt(0).SequenceNumber;
-            transaction.Program = program;
-            transaction.SenderAccount = sender.Address.ToByteString();
-
-            var request = new SubmitTransactionRequest();
-            request.SignedTxn = new SignedTransaction 
+            try
             {
-                RawTxnBytes = transaction.SenderAccount,
-                SenderPublicKey = sender.PublicKey,
-                SenderSignature = sender.Signature
-            };
+                var program = new Program();
+                program.Code = Convert.FromBase64String(Constant.ProgamBase64Codes.PeerToPeerTxn).ToByteString();
+                program.Arguments.Add(new TransactionArgument { Type = TransactionArgument.Types.ArgType.Address, Data = recipientAddress.ToByteString() });
+                program.Arguments.Add(new TransactionArgument { Type = TransactionArgument.Types.ArgType.U64, Data = amount.ToBytes().Reverse().ToByteString() });                
 
-            return await acClient.SubmitTransactionAsync(request);
+                var transaction = new RawTransaction();
+                transaction.ExpirationTime = (ulong)Math.Floor((decimal)DateTimeOffset.Now.ToUnixTimeMilliseconds() / 1000) + 100;
+                transaction.GasUnitPrice = gasUnitPrice;
+                transaction.MaxGasAmount = maxGasAmount;  
+                var accountState = await QueryBalance(sender.Address);
+                transaction.SequenceNumber = accountState.SequenceNumber;                
+                transaction.Program = program;
+                transaction.SenderAccount = sender.Address.ToByteString();   
+                                                      
+                var hash = new SHA3_256().ComputeVariable(Constant.HashSaltValues.RawTransactionHashSalt.FromHexToBytes().Concat(transaction.ToByteArray()).ToArray());
+                var senderSignature = sender.KeyPair.Sign(hash);
+
+                var request = new SubmitTransactionRequest 
+                {
+                    SignedTxn = new SignedTransaction 
+                    {
+                        RawTxnBytes = transaction.ToByteString(),
+                        SenderPublicKey = sender.PublicKey,
+                        SenderSignature = senderSignature.ToByteString()
+                    }  
+                };
+                    
+                return await acClient.SubmitTransactionAsync(request);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
-        public async Task<List<Wallet.AccountState>> QueryBalance(params string[] addresses)
+        public async Task<Wallet.AccountState> QueryBalance(string addresse)
+        {
+            return (await QueryBalances(addresse)).SingleOrDefault();
+        }
+
+        public async Task<List<Wallet.AccountState>> QueryBalances(params string[] addresses)
         {
             var request = new UpdateToLatestLedgerRequest();
             foreach (var address in addresses)
