@@ -30,6 +30,28 @@ var wallet = new LibraWallet();
 // Generate a new Account
 var account = wallet.NewAccount();
 
+// Mnemonic Words (Secret) for recover wallet
+var mnemonic = wallet.Mnemonic;
+Console.WriteLine(mnemonic);
+
+// you can see your address by:
+Console.WriteLine(account.Address);
+```
+
+### Recovering an Account
+
+In order to create a libra account, you would need to instantiate the `LibraWallet` like:
+
+```c#
+// Recovering a Wallet
+// Use mnemonic words (Secret) for recover wallet
+// var mnemonic = "elite kidney kangaroo enhance list mule paddle arrange popular frown ahead carry endorse thunder toy broken absorb level surprise arrow analyst segment wave fat";
+
+var wallet = new LibraWallet(mnemonic);
+
+// Recover an Account
+var account = wallet.NewAccount();
+
 // you can see your address by:
 Console.WriteLine(account.Address);
 ```
@@ -49,8 +71,19 @@ var sequenceNumber = await client.MintWithFaucetService(account.Address, 1000000
 
 ```c#
 // You can use parameter array for check multiple address.
-var accountStates = await client.QueryBalance(account.Address);
-Console.WriteLine(accountStates[0].Balance);
+var accountState = await client.QueryBalance(account.Address);
+Console.WriteLine(accountState.Balance);
+```
+
+### Transferring Libra Coins
+
+```c#
+// You can use parameter array for check multiple address.
+var sender = wallet.Accounts.ElementAt(0).Value;
+var receiverAddress = "face4412ab3325cf6e26624cff089eb1bf8ec6da489f05aad72a81de5ff7b5d1";
+var amount = 10000000UL;
+var response = await client.TransferCoins(sender, receiverAddress, amount);
+Console.WriteLine($"AC Status: {response.AcStatus.Code}");
 ```
 
 Related projects
