@@ -59,3 +59,7 @@ Related projects
 - Libra Core by perfectmak : https://github.com/perfectmak/libra-core
 - Libra Core by kulapio : https://github.com/kulapio/libra-core
 - Elliptic-curve cryptography by PeterWaher : https://github.com/PeterWaher/IoTGateway
+
+License
+----------------
+MIT License Copyright (c) 2019 Blockcoli
