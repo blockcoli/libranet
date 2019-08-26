@@ -53,13 +53,13 @@ namespace Blockcoli.Libra.Net.Client
             return ulong.Parse(sequenceNumber) - 1;
         }
 
-        public async Task<bool> TransferCoins(Account sender, string recipientAddress, ulong amount, ulong gasUnitPrice = 0, ulong maxGasAmount = 1000000)
+        public async Task<bool> TransferCoins(Account sender, string receiverAddress, ulong amount, ulong gasUnitPrice = 0, ulong maxGasAmount = 1000000)
         {
             try
             {
                 var program = new Program();
                 program.Code = Convert.FromBase64String(Constant.ProgamBase64Codes.PeerToPeerTxn).ToByteString();
-                program.Arguments.Add(new TransactionArgument { Type = TransactionArgument.Types.ArgType.Address, Data = recipientAddress.ToByteString() });
+                program.Arguments.Add(new TransactionArgument { Type = TransactionArgument.Types.ArgType.Address, Data = receiverAddress.ToByteString() });
                 program.Arguments.Add(new TransactionArgument { Type = TransactionArgument.Types.ArgType.U64, Data = amount.ToBytes().Reverse().ToByteString() });                
 
                 var transaction = new RawTransaction();
@@ -84,8 +84,8 @@ namespace Blockcoli.Libra.Net.Client
                     }  
                 };
                     
-                var state = await acClient.SubmitTransactionAsync(request);
-                return state.AcStatus.Code == AdmissionControlStatusCode.Accepted;
+                var response = await acClient.SubmitTransactionAsync(request);
+                return response.AcStatus.Code == AdmissionControlStatusCode.Accepted;
             }
             catch (Exception ex)
             {

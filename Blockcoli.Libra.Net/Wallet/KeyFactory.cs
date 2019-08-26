@@ -11,7 +11,7 @@ namespace Blockcoli.Libra.Net.Wallet
         public KeyFactory(Seed seed)
         {
             this.seed = seed;
-            this.masterPrk = seed.ToBytes().HkdfExtract(Constant.KeyPrefixes.MasterKeySalt, HashAlgorithm.SHA3_256);
+            this.masterPrk = seed.ToBytes().HkdfExtract(Constant.KeyPrefixes.MasterKeySalt);
         }
 
         public Edwards25519 GenerateKey(ulong childDepth)
@@ -21,7 +21,7 @@ namespace Blockcoli.Libra.Net.Wallet
             var info = new byte[childDepthBuffer.Length+derivedKeyBytes.Length];
             Array.Copy(derivedKeyBytes, info, derivedKeyBytes.Length);
             Array.Copy(childDepthBuffer, 0, info, derivedKeyBytes.Length, childDepthBuffer.Length);            
-            var privateKey = masterPrk.HkdfExpand(info, 32, HashAlgorithm.SHA3_256);            
+            var privateKey = masterPrk.HkdfExpand(info, 32);            
             var keyPair = new Edwards25519(privateKey);
             return keyPair;
         }

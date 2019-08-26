@@ -56,7 +56,7 @@ namespace Blockcoli.Libra.Net.Common
             var bytes = new byte[byteCount];
             Array.Copy(Buffer, byteOffset, bytes, 0, byteCount);
             if (!littleEndian.HasValue || !littleEndian.Value) Array.Reverse(bytes);
-            return BitConverter.ToUInt16(bytes);         
+            return BitConverter.ToUInt16(bytes, 0);         
         }
 
         public void SetUint16(int byteOffset, ushort value, bool? littleEndian = null)
@@ -72,7 +72,7 @@ namespace Blockcoli.Libra.Net.Common
             var bytes = new byte[byteCount];
             Array.Copy(Buffer, byteOffset, bytes, 0, byteCount);            
             if (!littleEndian.HasValue || !littleEndian.Value) Array.Reverse(bytes);
-            return BitConverter.ToInt16(bytes); 
+            return BitConverter.ToInt16(bytes, 0); 
         }
 
         public void SetInt16(int byteOffset, short value, bool? littleEndian = null)
@@ -88,7 +88,7 @@ namespace Blockcoli.Libra.Net.Common
             var bytes = new byte[byteCount];
             Array.Copy(Buffer, byteOffset, bytes, 0, byteCount);
             if (!littleEndian.HasValue || !littleEndian.Value) Array.Reverse(bytes);
-            return BitConverter.ToUInt32(bytes); 
+            return BitConverter.ToUInt32(bytes, 0); 
         }
 
         public void SetUint32(int byteOffset, uint value, bool? littleEndian = null)
@@ -104,7 +104,7 @@ namespace Blockcoli.Libra.Net.Common
             var bytes = new byte[byteCount];
             Array.Copy(Buffer, byteOffset, bytes, 0, byteCount);
             if (!littleEndian.HasValue || !littleEndian.Value) Array.Reverse(bytes);
-            return BitConverter.ToInt32(bytes); 
+            return BitConverter.ToInt32(bytes, 0); 
         }
 
         public void SetInt32(int byteOffset, int value, bool? littleEndian = null)
@@ -120,7 +120,7 @@ namespace Blockcoli.Libra.Net.Common
             var bytes = new byte[byteCount];
             Array.Copy(Buffer, byteOffset, bytes, 0, byteCount);
             if (!littleEndian.HasValue || !littleEndian.Value) Array.Reverse(bytes);
-            return BitConverter.ToUInt64(bytes); 
+            return BitConverter.ToUInt64(bytes, 0); 
         }
 
         public void SetBigUint64(int byteOffset, ulong value, bool? littleEndian = null)
@@ -136,7 +136,7 @@ namespace Blockcoli.Libra.Net.Common
             var bytes = new byte[byteCount];
             Array.Copy(Buffer, byteOffset, bytes, 0, byteCount);
             if (!littleEndian.HasValue || !littleEndian.Value) Array.Reverse(bytes);
-            return BitConverter.ToInt64(bytes); 
+            return BitConverter.ToInt64(bytes, 0); 
         }
 
         public void SetBigInt64(int byteOffset, long value, bool? littleEndian = null)
@@ -152,7 +152,7 @@ namespace Blockcoli.Libra.Net.Common
             var bytes = new byte[byteCount];
             Array.Copy(Buffer, byteOffset, bytes, 0, byteCount);
             if (!littleEndian.HasValue || !littleEndian.Value) Array.Reverse(bytes);
-            return BitConverter.ToSingle(bytes); 
+            return BitConverter.ToSingle(bytes, 0); 
         }
 
         public void SetFloat32(int byteOffset, float value, bool? littleEndian = null)
@@ -168,7 +168,7 @@ namespace Blockcoli.Libra.Net.Common
             var bytes = new byte[byteCount];
             Array.Copy(Buffer, byteOffset, bytes, 0, byteCount);
             if (!littleEndian.HasValue || !littleEndian.Value) Array.Reverse(bytes);
-            return BitConverter.ToDouble(bytes); 
+            return BitConverter.ToDouble(bytes, 0); 
         }
 
         public void SetFloat64(int byteOffset, double value, bool? littleEndian = null)

@@ -85,253 +85,156 @@ namespace Blockcoli.Libra.Net
             return result;
         }  
 
-        public static byte[] Pbkdf(this byte[] password, byte[] salt, int iterations, int outputLen, HashAlgorithm hashAlgorithm)
+        public static byte[] Pbkdf(this byte[] password, byte[] salt, int iterations, int outputLen)
         {
-            HashAlgorithmName hashAlgorithmName;
-            switch (hashAlgorithm)
+            var hmacLength = 32;
+            var outputBuffer = new byte[outputLen];
+            var hmacOutput = new byte[hmacLength];
+            var block = new byte[salt.Length + 4];
+            var leftLength = Math.Ceiling((decimal)outputLen / hmacLength);
+            var rightLength = outputLen - (leftLength - 1) * hmacLength;
+            salt.CopyTo(block, 0);
+
+            for (var i = 1u; i <= leftLength; i++)
             {
-                case HashAlgorithm.SHA_1:
-                    hashAlgorithmName = HashAlgorithmName.SHA1;
-                    break;
-                case HashAlgorithm.SHA_256:
-                    hashAlgorithmName = HashAlgorithmName.SHA256;
-                    break;
-                case HashAlgorithm.SHA_384:
-                    hashAlgorithmName = HashAlgorithmName.SHA384;
-                    break;
-                case HashAlgorithm.SHA_512:
-                    hashAlgorithmName = HashAlgorithmName.SHA512;
-                    break;                
-                default:
-                    hashAlgorithmName = HashAlgorithmName.SHA256;
-                    break;
-                case HashAlgorithm.SHA3_256:
-                    var hmacLength = 32;
-                    var outputBuffer = new byte[outputLen];
-                    var hmacOutput = new byte[hmacLength];
-                    var block = new byte[salt.Length + 4];
-                    var leftLength = Math.Ceiling((decimal)outputLen / hmacLength);
-                    var rightLength = outputLen - (leftLength - 1) * hmacLength;
-                    salt.CopyTo(block, 0);
+                var intBytes = i.ToBytes();
+                Array.Copy(intBytes, 0, block, salt.Length, intBytes.Length);
 
-                    for (var i = 1u; i <= leftLength; i++)
+                var hmac = block.Hmac(password);
+                hmac.CopyTo(hmacOutput, 0);
+
+                for (var j = 1; j < iterations; j++)
+                {
+                    hmac = hmac.Hmac(password);
+                    for (var k = 0; k < hmacLength; k++)
                     {
-                        var intBytes = i.ToBytes();
-                        Array.Copy(intBytes, 0, block, salt.Length, intBytes.Length);
-
-                        var hmac = block.Hmac(password, HashAlgorithm.SHA3_256);
-                        hmac.CopyTo(hmacOutput, 0);
-
-                        for (var j = 1; j < iterations; j++)
-                        {
-                            hmac = hmac.Hmac(password, HashAlgorithm.SHA3_256);
-                            for (var k = 0; k < hmacLength; k++)
-                            {
-                                hmacOutput[k] ^= hmac[k];
-                            }
-                        }
-
-                        var destPos = (i - 1) * hmacLength;
-                        var len = i == leftLength ? (int)rightLength : hmacLength;
-                        Array.Copy(hmacOutput, 0, outputBuffer, destPos, len);
+                        hmacOutput[k] ^= hmac[k];
                     }
+                }
 
-                    return outputBuffer;
+                var destPos = (i - 1) * hmacLength;
+                var len = i == leftLength ? (int)rightLength : hmacLength;
+                Array.Copy(hmacOutput, 0, outputBuffer, destPos, len);
             }
-            
-            var pdb = new Rfc2898DeriveBytes(password, salt, iterations, hashAlgorithmName);
-            return pdb.GetBytes(outputLen);
+
+            return outputBuffer;
         }
 
-        public static byte[] Pbkdf(this byte[] password, string salt, int iterations, int outputLen, HashAlgorithm hashAlgorithm)
+        public static byte[] Pbkdf(this byte[] password, string salt, int iterations, int outputLen)
         {
-            return password.Pbkdf(salt.ToBytes(), iterations, outputLen, hashAlgorithm);
+            return password.Pbkdf(salt.ToBytes(), iterations, outputLen);
         }
 
-        public static byte[] Pbkdf(this string password, byte[] salt, int iterations, int outputLen, HashAlgorithm hashAlgorithm)
+        public static byte[] Pbkdf(this string password, byte[] salt, int iterations, int outputLen)
         {
-            return password.ToBytes().Pbkdf(salt, iterations, outputLen, hashAlgorithm);
+            return password.ToBytes().Pbkdf(salt, iterations, outputLen);
         }
 
-        public static byte[] Pbkdf(this string password, string salt, int iterations, int outputLen, HashAlgorithm hashAlgorithm)
+        public static byte[] Pbkdf(this string password, string salt, int iterations, int outputLen)
         {
-            return password.ToBytes().Pbkdf(salt.ToBytes(), iterations, outputLen, hashAlgorithm);
+            return password.ToBytes().Pbkdf(salt.ToBytes(), iterations, outputLen);
         }
 
-        public static byte[] Hmac(this byte[] data, byte[] key, HashAlgorithm hashAlgorithm)
+        public static byte[] Hmac(this byte[] data, byte[] key)
         {
-            HMAC hmac;
-            switch (hashAlgorithm)
+            var blockSize = 136;
+            var ipad = new byte[blockSize];
+            var opad = new byte[blockSize];                                        
+
+            if (key.Length > blockSize)
+            { 
+                key = new SHA3_256().ComputeVariable(key);                                             
+            }
+            else if (key.Length < blockSize)
             {
-                case HashAlgorithm.SHA_1:
-                    hmac = new HMACSHA1();
-                    hmac.Key = key;
-                    return hmac.ComputeHash(data);
-                case HashAlgorithm.SHA_256:
-                    hmac = new HMACSHA256();
-                    hmac.Key = key;
-                    return hmac.ComputeHash(data);
-                case HashAlgorithm.SHA_384:
-                    hmac = new HMACSHA384();
-                    hmac.Key = key;
-                    return hmac.ComputeHash(data);
-                case HashAlgorithm.SHA_512:
-                    hmac = new HMACSHA512();
-                    hmac.Key = key;
-                    return hmac.ComputeHash(data);            
-                default:
-                    hmac = new HMACSHA256();
-                    hmac.Key = key;
-                    return hmac.ComputeHash(data);
-                case HashAlgorithm.SHA3_256:
-                    var blockSize = 136;
-                    var ipad = new byte[blockSize];
-                    var opad = new byte[blockSize];                                        
-
-                    if (key.Length > blockSize)
-                    { 
-                        key = new SHA3_256().ComputeVariable(key);                                             
-                    }
-                    else if (key.Length < blockSize)
-                    {
-                        var temp = new byte[blockSize];
-                        Array.Copy(key, temp, key.Length);
-                        Array.Clear(temp, 128, blockSize - 128);
-                        key = temp;
-                    }
-
-                    for (var i = 0; i < blockSize; i++)
-                    {
-                        ipad[i] = i < key.Length ? (byte)(key[i] ^ 0x36) : (byte)0x36;
-                        opad[i] = i < key.Length ? (byte)(key[i] ^ 0x5C) : (byte)0x5C;
-                    }
-
-                    var hash1 = new SHA3_256().ComputeVariable(ipad.Concat(data).ToArray());
-                    var hash2 = new SHA3_256().ComputeVariable(opad.Concat(hash1).ToArray());
-                    return hash2;
+                var temp = new byte[blockSize];
+                Array.Copy(key, temp, key.Length);
+                Array.Clear(temp, 128, blockSize - 128);
+                key = temp;
             }
+
+            for (var i = 0; i < blockSize; i++)
+            {
+                ipad[i] = i < key.Length ? (byte)(key[i] ^ 0x36) : (byte)0x36;
+                opad[i] = i < key.Length ? (byte)(key[i] ^ 0x5C) : (byte)0x5C;
+            }
+
+            var hash1 = new SHA3_256().ComputeVariable(ipad.Concat(data).ToArray());
+            var hash2 = new SHA3_256().ComputeVariable(opad.Concat(hash1).ToArray());
+            return hash2;
         }
 
-        public static byte[] Hmac(this byte[] data, string key, HashAlgorithm hashAlgorithm)
+        public static byte[] Hmac(this byte[] data, string key)
         {
-            return data.Hmac(key.ToBytes(), hashAlgorithm);
+            return data.Hmac(key.ToBytes());
         }
         
-        public static byte[] Hmac(this string data, byte[] key, HashAlgorithm hashAlgorithm)
+        public static byte[] Hmac(this string data, byte[] key)
         {
-            return data.ToBytes().Hmac(key, hashAlgorithm);
+            return data.ToBytes().Hmac(key);
         }
 
-        public static byte[] Hmac(this string data, string key, HashAlgorithm hashAlgorithm)
+        public static byte[] Hmac(this string data, string key)
         {
-            return data.ToBytes().Hmac(key.ToBytes(), hashAlgorithm);
+            return data.ToBytes().Hmac(key.ToBytes());
         }
 
-        public static byte[] HkdfExpand(this byte[] prk, byte[] info, int outputLength, HashAlgorithm hashAlgorithm)
+        public static byte[] HkdfExpand(this byte[] prk, byte[] info, int outputLength)
         {
-            HMAC hmac;
-            switch (hashAlgorithm)
+            var infoLen = info.Length;
+            var hashLen = 32;
+            var steps = Math.Ceiling((decimal)outputLength / hashLen);
+            if (steps > 0xFF)
             {
-                case HashAlgorithm.SHA_1:
-                    hmac = new HMACSHA1();
-                    break;
-                case HashAlgorithm.SHA_256:
-                    hmac = new HMACSHA256();
-                    break;
-                case HashAlgorithm.SHA_384:
-                    hmac = new HMACSHA384();
-                    break;
-                case HashAlgorithm.SHA_512:
-                    hmac = new HMACSHA512();
-                    break;
-                default:
-                    hmac = new HMACSHA256();
-                    break;
+                throw new Exception("OKM length ${length} is too long for sha3-256 hash");
             }
-            
-            switch (hashAlgorithm)
+
+            var t = new byte[hashLen * (int)steps + infoLen + 1];
+
+            for (int c = 1, start = 0, end = 0; c <= steps; ++c)
             {
-                case HashAlgorithm.SHA_1:
-                case HashAlgorithm.SHA_256:
-                case HashAlgorithm.SHA_384:
-                case HashAlgorithm.SHA_512:          
-                default:
-                    Func<byte[], byte[], byte[]> keyedHash = (key, message) =>
-                    {
-                        hmac.Key = key;
-                        return hmac.ComputeHash(message);
-                    };
-                    var resultBlock = new byte[0];
-                    var result = new byte[outputLength];
-                    var bytesRemaining = outputLength;
-                                       
-                    for (int i = 1; bytesRemaining > 0; i++)
-                    {                        
-                        var currentInfo = new byte[resultBlock.Length + info.Length + 1];
-                        Array.Copy(resultBlock, 0, currentInfo, 0, resultBlock.Length);
-                        Array.Copy(info, 0, currentInfo, resultBlock.Length, info.Length);
-                        currentInfo[currentInfo.Length - 1] = (byte)i;
-                        resultBlock = keyedHash(prk, currentInfo);
-                        Array.Copy(resultBlock, 0, result, outputLength - bytesRemaining, Math.Min(resultBlock.Length, bytesRemaining));
-                        bytesRemaining -= resultBlock.Length;
-                    }
-                    return result;
-                case HashAlgorithm.SHA3_256: 
-                    var infoLen = info.Length;
-                    var hashLen = 32;
-                    var steps = Math.Ceiling((decimal)outputLength / hashLen);
-                    if (steps > 0xFF)
-                    {
-                        throw new Exception("OKM length ${length} is too long for sha3-256 hash");
-                    }
-
-                    var t = new byte[hashLen * (int)steps + infoLen + 1];
-
-                    for (int c = 1, start = 0, end = 0; c <= steps; ++c)
-                    {
-                        info.CopyTo(t, end);
-                        t[end + infoLen] = (byte)c;
-                        t.Slice(start, end + infoLen + 1).Hmac(prk, HashAlgorithm.SHA3_256).CopyTo(t, end);
-                        start = end; //used for T(C-1) start
-                        end += hashLen; // used for T(C-1) end & overall end
-                    }
-                    return t.Slice(0, outputLength);
+                info.CopyTo(t, end);
+                t[end + infoLen] = (byte)c;
+                t.Slice(start, end + infoLen + 1).Hmac(prk).CopyTo(t, end);
+                start = end; //used for T(C-1) start
+                end += hashLen; // used for T(C-1) end & overall end
             }
+            return t.Slice(0, outputLength);
         }  
 
-        public static byte[] HkdfExpand(this byte[] prk, string info, int outputLength, HashAlgorithm hashAlgorithm)
+        public static byte[] HkdfExpand(this byte[] prk, string info, int outputLength)
         {
-            return prk.HkdfExpand(info.ToBytes(), outputLength, hashAlgorithm);
+            return prk.HkdfExpand(info.ToBytes(), outputLength);
         }    
 
-        public static byte[] HkdfExpand(this string prk, byte[] info, int outputLength, HashAlgorithm hashAlgorithm)
+        public static byte[] HkdfExpand(this string prk, byte[] info, int outputLength)
         {
-            return prk.ToBytes().HkdfExpand(info, outputLength, hashAlgorithm);
+            return prk.ToBytes().HkdfExpand(info, outputLength);
         } 
 
-        public static byte[] HkdfExpand(this string prk, string info, int outputLength, HashAlgorithm hashAlgorithm)
+        public static byte[] HkdfExpand(this string prk, string info, int outputLength)
         {
-            return prk.ToBytes().HkdfExpand(info.ToBytes(), outputLength, hashAlgorithm);
+            return prk.ToBytes().HkdfExpand(info.ToBytes(), outputLength);
         } 
 
-        public static byte[] HkdfExtract(this byte[] ikm, byte[] salt, HashAlgorithm hashAlgorithm)
+        public static byte[] HkdfExtract(this byte[] ikm, byte[] salt)
         {
-            return ikm.Hmac(salt, hashAlgorithm);
+            return ikm.Hmac(salt);
         }
 
-        public static byte[] HkdfExtract(this byte[] ikm, string salt, HashAlgorithm hashAlgorithm)
+        public static byte[] HkdfExtract(this byte[] ikm, string salt)
         {
-            return ikm.Hmac(salt.ToBytes(), hashAlgorithm);
+            return ikm.Hmac(salt.ToBytes());
         }
 
-        public static byte[] HkdfExtract(this string ikm, byte[] salt, HashAlgorithm hashAlgorithm)
+        public static byte[] HkdfExtract(this string ikm, byte[] salt)
         {
-            return ikm.ToBytes().Hmac(salt, hashAlgorithm);
+            return ikm.ToBytes().Hmac(salt);
         }
 
-        public static byte[] HkdfExtract(this string ikm, string salt, HashAlgorithm hashAlgorithm)
+        public static byte[] HkdfExtract(this string ikm, string salt)
         {
-            return ikm.ToBytes().Hmac(salt.ToBytes(), hashAlgorithm);
+            return ikm.ToBytes().Hmac(salt.ToBytes());
         }
 
         public static byte[] EddsaSign(this byte[] message, byte[] secretKey)
@@ -362,10 +265,5 @@ namespace Blockcoli.Libra.Net
             foreach (T item in enumerable)
                 handler(item, idx++);
         }
-    }
-
-    public enum HashAlgorithm
-    {
-        SHA_1, SHA_256, SHA_384, SHA_512, SHA3_256
     }
 }

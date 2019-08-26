@@ -9,7 +9,7 @@ namespace Blockcoli.Libra.Net.Wallet
 
         public static Seed FromMnemonic(Mnemonic mnemonic, string salt = "LIBRA")
         {
-            var bytes = mnemonic.ToBytes().Pbkdf($"{Constant.KeyPrefixes.MnemonicSalt}{salt}", 2048, 32, HashAlgorithm.SHA3_256);
+            var bytes = mnemonic.ToBytes().Pbkdf($"{Constant.KeyPrefixes.MnemonicSalt}{salt}", 2048, 32);
             return new Seed(bytes);
         }
 
