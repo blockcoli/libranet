@@ -53,7 +53,7 @@ namespace Blockcoli.Libra.Net.Client
             return ulong.Parse(sequenceNumber) - 1;
         }
 
-        public async Task<SubmitTransactionResponse> TransferCoins(Account sender, string recipientAddress, ulong amount, ulong gasUnitPrice = 0, ulong maxGasAmount = 1000000)
+        public async Task<bool> TransferCoins(Account sender, string recipientAddress, ulong amount, ulong gasUnitPrice = 0, ulong maxGasAmount = 1000000)
         {
             try
             {
@@ -84,7 +84,8 @@ namespace Blockcoli.Libra.Net.Client
                     }  
                 };
                     
-                return await acClient.SubmitTransactionAsync(request);
+                var state = await acClient.SubmitTransactionAsync(request);
+                return state.AcStatus.Code == AdmissionControlStatusCode.Accepted;
             }
             catch (Exception ex)
             {
