@@ -396,8 +396,8 @@ event | ev <account_ref_id>|<account_address> <sent|received> <start_sequence_nu
 
             try
             {
-                var response = await client.TransferCoins(wallet.Accounts[senderAddress], receiverAddress, amount, gasUnitPrice, maxGasAmount);
-                Console.WriteLine($"AC Status: {response.AcStatus.Code}"); 
+                var isAccepted = await client.TransferCoins(wallet.Accounts[senderAddress], receiverAddress, amount, gasUnitPrice, maxGasAmount);
+                Console.WriteLine($"AC Accepted: {isAccepted}"); 
             }
             catch (Exception ex)
             {

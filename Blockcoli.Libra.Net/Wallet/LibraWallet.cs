@@ -23,7 +23,7 @@ namespace Blockcoli.Libra.Net.Wallet
             
         }
 
-        public LibraWallet(string words) : this(new Mnemonic(words.Split(" ")))
+        public LibraWallet(string words) : this(new Mnemonic(words.Split(' ')))
         {
             
         }
