@@ -1,13 +1,15 @@
 # Blockcoli.Libra.Net
 Libra Wallet SDK for .NET
 
-Build from .NET Standard 2.1 Preview in .NET Core 3.0 Preview 8
+Blockcoli Open-Source Project release The World 1st .NET SDK for Libra Wallet creating on Github repository and build to Nuget package manager. 
+
+Build from .NET Standard 2.0 and .NET Core 2.2
 
 ## Installation
 To install with nuget run:
 
 ```
-dotnet add package Blockcoli.Libra.Net --version 0.1.0
+dotnet add package Blockcoli.Libra.Net
 ```
 
 ## Usage
