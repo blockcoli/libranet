@@ -9,14 +9,14 @@ syntax = "proto3";
 
 package types;
 
-import "Proto/access_path.proto";
+// import "Proto/access_path.proto";
 import "Proto/proof.proto";
 
 // An event emitted from a smart contract
 message Event {
-    AccessPath access_path = 1;
-    uint64 sequence_number = 2;
-    bytes event_data = 3;
+  bytes key = 1;
+  uint64 sequence_number = 2;
+  bytes event_data = 3;
 }
 
 // An event along with the proof for the event
@@ -34,5 +34,5 @@ message EventsList {
 
 // A list of EventList's, each representing all events for a transaction.
 message EventsForVersions {
-    repeated EventsList events_for_version = 1;
+  repeated EventsList events_for_version = 1;
 }
