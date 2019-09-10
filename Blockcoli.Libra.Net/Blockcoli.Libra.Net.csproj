@@ -3,8 +3,15 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <PackageId>Blockcoli.Libra.Net</PackageId>
-    <Version>0.3.0</Version>
-    <Authors>Blockcoli</Authors>
+    <Version>0.4.0</Version>
+    <Authors>Blockcoli,CodeBangkok</Authors>
+    <Description>Libra Wallet SDK for .NET</Description>
+    <PackageDescription>Libra Wallet SDK for .NET</PackageDescription>
+    <PackageReleaseNotes>Fix TransferCoins</PackageReleaseNotes>
+    <PackageTags>libra crypto wallet blockchain</PackageTags>
+    <RepositoryUrl>https://github.com/blockcoli/libranet</RepositoryUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageIconUrl>https://en.gravatar.com/userimage/166858300/5171a81156f96022e30dbba410d050c8.jpg</PackageIconUrl>
   </PropertyGroup>
 
   <ItemGroup>
