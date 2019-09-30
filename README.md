@@ -3,7 +3,9 @@ Libra Wallet SDK for .NET
 
 Blockcoli Open-Source Project release The World 1st .NET SDK for Libra Wallet creating on Github repository and build to Nuget package manager. 
 
-Build from .NET Standard 2.0 and .NET Core 2.2
+Build from .NET Standard 2.0 and .NET Core 3.0
+
+Fix - Libra Canonical Serialization (LCS) for Transfer Coin https://github.com/libra/libra/blob/d54980c7fd8d40c9c3d215399b23bd55c263a188/common/canonical_serialization/README.md
 
 ## Installation
 To install with nuget run:
@@ -94,6 +96,7 @@ Related projects
 - Libra Core by perfectmak : https://github.com/perfectmak/libra-core
 - Libra Core by kulapio : https://github.com/kulapio/libra-core
 - Elliptic-curve cryptography by PeterWaher : https://github.com/PeterWaher/IoTGateway
+- 1950Labs / 2019_POC_Libra : https://github.com/1950Labs/2019_POC_Libra
 
 License
 ----------------
