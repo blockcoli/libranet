@@ -20,9 +20,8 @@ namespace Blockcoli.Libra.Net.LCS
 
         public byte[] AddressToByte(AddressLCS source)
         {
-            var len = U32ToByte((uint)source.Length);
             var data = source.Value.HexStringToByteArray();
-            return len.Concat(data).ToArray();
+            return data; 
         }
 
         public byte[] U32ToByte(uint source)

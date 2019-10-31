@@ -87,28 +87,27 @@ namespace Blockcoli.Libra.Net.Client
                     ExpirationTime = (ulong)Math.Floor((decimal)DateTimeOffset.Now.ToUnixTimeMilliseconds() / 1000) + 100
                 };   
                 var transactionLCS = LCSCore.LCSDeserialization(transaction);
-                
+
                 var digestSHA3 = new SHA3_256();
                 var saltDigest = digestSHA3.ComputeVariable(Constant.HashSaltValues.RawTransactionHashSalt.ToBytes());
                 var saltDigestAndTransaction = saltDigest.Concat(transactionLCS).ToArray();
                 var hash = digestSHA3.ComputeVariable(saltDigestAndTransaction);
-                var senderSignature = sender.KeyPair.Sign(hash);                
-
+                var senderSignature = sender.KeyPair.Sign(hash);     
+                
                 var publicKeyLen = BitConverter.GetBytes((uint)sender.PublicKey.Length);
                 var signatureLen = BitConverter.GetBytes((uint)senderSignature.Length);
-                var signedTxn = transactionLCS.Concat(publicKeyLen).ToArray();
-                signedTxn = signedTxn.Concat(sender.PublicKey).ToArray();
-                signedTxn = signedTxn.Concat(signatureLen).ToArray();
-                signedTxn = signedTxn.Concat(senderSignature).ToArray();
-
+                var txnBytes = transactionLCS.Concat(publicKeyLen).ToArray();
+                txnBytes = txnBytes.Concat(sender.PublicKey).ToArray();
+                txnBytes = txnBytes.Concat(signatureLen).ToArray();
+                txnBytes = txnBytes.Concat(senderSignature).ToArray();                
+                                
                 var request = new SubmitTransactionRequest
                 {
                     SignedTxn = new SignedTransaction
-                    {
-                        SignedTxn = signedTxn.ToByteString()
+                    {                        
+                        TxnBytes = txnBytes.ToByteString()
                     }
                 };                
-                
                 
                 var response = await acClient.SubmitTransactionAsync(request);
                 return response.AcStatus.Code == AdmissionControlStatusCode.Accepted;
