@@ -89,8 +89,8 @@ Console.WriteLine(accountState.Balance);
 var sender = wallet.Accounts.ElementAt(0).Value;
 var receiverAddress = "face4412ab3325cf6e26624cff089eb1bf8ec6da489f05aad72a81de5ff7b5d1";
 var amount = 10000000UL;
-var response = await client.TransferCoins(sender, receiverAddress, amount);
-Console.WriteLine($"AC Status: {response.AcStatus.Code}");
+var success = await client.TransferCoins(sender, receiverAddress, amount);
+Console.WriteLine($"AC Status: {success}");
 ```
 
 Related projects
