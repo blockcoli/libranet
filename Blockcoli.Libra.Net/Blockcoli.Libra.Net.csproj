@@ -3,15 +3,15 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <PackageId>Blockcoli.Libra.Net</PackageId>
-    <Version>0.5.0</Version>
+    <Version>0.6.0</Version>
     <Authors>Blockcoli,CodeBangkok</Authors>
     <Description>Libra Wallet SDK for .NET</Description>
     <PackageDescription>Libra Wallet SDK for .NET</PackageDescription>
-    <PackageReleaseNotes>Fix TransferCoins</PackageReleaseNotes>
+    <PackageReleaseNotes>Update Proto file, Rename SignedTxn to TxnBytes, Change AccountStatePath, Change Address LCS remove length</PackageReleaseNotes>
     <PackageTags>libra crypto wallet blockchain</PackageTags>
     <RepositoryUrl>https://github.com/blockcoli/libranet</RepositoryUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageIconUrl>https://en.gravatar.com/userimage/166858300/5171a81156f96022e30dbba410d050c8.jpg</PackageIconUrl>
+    <PackageIcon>icon.jpg</PackageIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -21,6 +21,7 @@
     <Folder Include="Crypto\" />
     <Folder Include="Proto\" />
     <Folder Include="Wallet\" />
+    <None Include="icon.jpg" Pack="true" PackagePath="\"/>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Google.Protobuf" Version="3.9.2" />
