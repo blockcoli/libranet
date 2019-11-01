@@ -1,9 +1,9 @@
 # Blockcoli.Libra.Net
 Libra Wallet SDK for .NET
 
-Blockcoli is an open source project which is the world 1st .NET SDK for creating Libra wallet. It is hosted on Github repository and alos built as Nuget package. 
+Blockcoli is an open source project which is the world 1st .NET SDK for creating Libra wallet. It is hosted on Github repository and also built as a Nuget package. 
 
-This project is build with .NET Standard 2.0
+This project is built with .NET Standard 2.0
 
 ## Installation
 To install the nuget package from a command line, run:
@@ -19,7 +19,7 @@ Install-Package Blockcoli.Libra.Net
 
 ## Usage
 
-At the top of your class file, add using for two namespaces.
+At the top of your class file, add `using` for two namespaces.
 
 ```c#
 using Blockcoli.Libra.Net.Wallet;
@@ -28,7 +28,7 @@ using Blockcoli.Libra.Net.Client;
 
 ### Creating an account
 
-In order to create a libra account, you would need to instantiate the `LibraWallet` as following code example:
+In order to create a libra account, you would need to instantiate the `LibraWallet` as shown in the following code example:
 
 ```c#
 // Create a new wallet
@@ -47,7 +47,7 @@ Console.WriteLine(account.Address);
 
 ### Recovering an account
 
-In order to create a libra account, you would need to instantiate the `LibraWallet` as following code example:
+In order to create a libra account, you would need to instantiate the `LibraWallet` as shown in the following code example:
 
 ```c#
 // Recovering a wallet with mnemonic words (secret)
