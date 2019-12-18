@@ -263,8 +263,8 @@ mint | mintb | m | mb <receiver_account_ref_id>|<receiver_account_address> <numb
                 return;
             }            
             
-            await client.MintWithFaucetService(address, amount);
-            Console.WriteLine("Mint request submitted");
+            var resultAmount = await client.MintWithFaucetService(address, amount);
+            Console.WriteLine($"Mint request submitted - {resultAmount}");
         }
 
         private string GetAddressOrIndex(string addressOrIndex)

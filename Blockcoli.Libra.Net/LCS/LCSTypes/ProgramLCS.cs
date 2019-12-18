@@ -10,12 +10,8 @@ using System.Linq;
 
 namespace Blockcoli.Libra.Net.LCS
 {
-    public class ProgramLCS
+    public class ProgramLCS : PayloadLCS
     {
-        public byte[] Code { get; set; }
-        public List<TransactionArgumentLCS> TransactionArguments { get; set; }
-        public List<byte[]> Modules { get; set; }
-
         public override string ToString()
         {
             string retStr = "{" +

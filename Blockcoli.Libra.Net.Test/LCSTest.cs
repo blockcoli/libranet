@@ -15,7 +15,7 @@ namespace Blockcoli.Libra.Net.Test
                 Value = "ca820bf9305eb97d0d784f71b3955457fbf6911f5300ceaa5d7e8621529eae19"
             };
             var actual = LCSCore.LCSDeserialization(addressLCS).ByteArrayToString();
-            var expected = "20000000CA820BF9305EB97D0D784F71B3955457FBF6911F5300CEAA5D7E8621529EAE19".ToLower();
+            var expected = "CA820BF9305EB97D0D784F71B3955457FBF6911F5300CEAA5D7E8621529EAE19".ToLower();
             Assert.Equal(expected, actual);
         }
 
@@ -45,7 +45,7 @@ namespace Blockcoli.Libra.Net.Test
                 }
             };
             var actual = LCSCore.LCSDeserialization(transactionArgument).ByteArrayToString();
-            var expected = "01000000200000002C25991785343B23AE073A50E5FD809A2CD867526B3C1DB2B0BF5D1924C693ED".ToLower();
+            var expected = "010000002c25991785343b23ae073a50e5fd809a2cd867526b3c1db2b0bf5d1924c693ed".ToLower();
             Assert.Equal(expected, actual);
         }
 
@@ -104,6 +104,28 @@ namespace Blockcoli.Libra.Net.Test
         }
 
         [Fact]
+        public void Script()
+        {            
+            var script = new ScriptLCS();
+            script.Code = "move".ToBytes();
+            script.TransactionArguments = new List<TransactionArgumentLCS>();
+            script.TransactionArguments.Add(new TransactionArgumentLCS 
+            {  
+                ArgType = Types.TransactionArgument.Types.ArgType.String,
+                String = "CAFE D00D"
+            });
+            script.TransactionArguments.Add(new TransactionArgumentLCS 
+            {  
+                ArgType = Types.TransactionArgument.Types.ArgType.String,
+                String = "cafe d00d"
+            });
+
+            var actual = LCSCore.LCSDeserialization(script).ByteArrayToString();
+            var expected = "040000006d6f76650200000002000000090000004341464520443030440200000009000000636166652064303064".ToLower();
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
         public void AccessPath()
         {            
             var accessPath = new AccessPathLCS 
@@ -115,7 +137,7 @@ namespace Blockcoli.Libra.Net.Test
                 Path =  "01217da6c6b3e19f1825cfb2676daecce3bf3de03cf26647c78df00b371b25cc97".FromHexToBytes()         
             };
             var actual = LCSCore.LCSDeserialization(accessPath).ByteArrayToString();
-            var expected = "200000009A1AD09742D1FFC62E659E9A7797808B206F956F131D07509449C01AD8220AD42100000001217DA6C6B3E19F1825CFB2676DAECCE3BF3DE03CF26647C78DF00B371B25CC97".ToLower();
+            var expected = "9A1AD09742D1FFC62E659E9A7797808B206F956F131D07509449C01AD8220AD42100000001217DA6C6B3E19F1825CFB2676DAECCE3BF3DE03CF26647C78DF00B371B25CC97".ToLower();
             Assert.Equal(expected, actual);
         }
 
@@ -175,7 +197,7 @@ namespace Blockcoli.Libra.Net.Test
             });            
             
             var actual = LCSCore.LCSDeserialization(writeSet).ByteArrayToString();
-            var expected = "0200000020000000A71D76FAA2D2D5C3224EC3D41DEB293973564A791E55C6782BA76C2BF0495F9A2100000001217DA6C6B3E19F1825CFB2676DAECCE3BF3DE03CF26647C78DF00B371B25CC970000000020000000C4C63F80C74B11263E421EBF8486A4E398D0DBC09FA7D4F62CCDB309F3AEA81F0900000001217DA6C6B3E19F180100000004000000CAFED00D".ToLower();
+            var expected = "02000000a71d76faa2d2d5c3224ec3d41deb293973564a791e55c6782ba76c2bf0495f9a2100000001217da6c6b3e19f1825cfb2676daecce3bf3de03cf26647c78df00b371b25cc9700000000c4c63f80c74b11263e421ebf8486a4e398d0dbc09fa7d4f62ccdb309f3aea81f0900000001217da6c6b3e19f180100000004000000cafed00d".ToLower();
             Assert.Equal(expected, actual);
         }
 
@@ -246,7 +268,7 @@ namespace Blockcoli.Libra.Net.Test
                 WriteSet = writeSet    
             };
             var actual = LCSCore.LCSDeserialization(transactionPayload).ByteArrayToString();
-            var expected = "010000000200000020000000A71D76FAA2D2D5C3224EC3D41DEB293973564A791E55C6782BA76C2BF0495F9A2100000001217DA6C6B3E19F1825CFB2676DAECCE3BF3DE03CF26647C78DF00B371B25CC970000000020000000C4C63F80C74B11263E421EBF8486A4E398D0DBC09FA7D4F62CCDB309F3AEA81F0900000001217DA6C6B3E19F180100000004000000CAFED00D".ToLower();
+            var expected = "0100000002000000a71d76faa2d2d5c3224ec3d41deb293973564a791e55c6782ba76c2bf0495f9a2100000001217da6c6b3e19f1825cfb2676daecce3bf3de03cf26647c78df00b371b25cc9700000000c4c63f80c74b11263e421ebf8486a4e398d0dbc09fa7d4f62ccdb309f3aea81f0900000001217da6c6b3e19f180100000004000000cafed00d".ToLower();
             Assert.Equal(expected, actual);
         }
 
@@ -288,7 +310,7 @@ namespace Blockcoli.Libra.Net.Test
                 ExpirationTime = 86400UL
             };   
             var actual = LCSCore.LCSDeserialization(transaction).ByteArrayToString();
-            var expected = "200000003A24A61E05D129CACE9E0EFC8BC9E33831FEC9A9BE66F50FD352A2638A49B9EE200000000000000000000000040000006D6F766502000000020000000900000043414645204430304402000000090000006361666520643030640300000001000000CA02000000FED0010000000D1027000000000000204E0000000000008051010000000000".ToLower();
+            var expected = "3A24A61E05D129CACE9E0EFC8BC9E33831FEC9A9BE66F50FD352A2638A49B9EE200000000000000000000000040000006D6F766502000000020000000900000043414645204430304402000000090000006361666520643030640300000001000000CA02000000FED0010000000D1027000000000000204E0000000000008051010000000000".ToLower();
             Assert.Equal(expected, actual);
         }
 
@@ -339,7 +361,7 @@ namespace Blockcoli.Libra.Net.Test
                 ExpirationTime = 18446744073709551615UL
             };   
             var actual = LCSCore.LCSDeserialization(transaction).ByteArrayToString();
-            var expected = "20000000C3398A599A6F3B9F30B635AF29F2BA046D3A752C26E9D0647B9647D1F4C04AD42000000000000000010000000200000020000000A71D76FAA2D2D5C3224EC3D41DEB293973564A791E55C6782BA76C2BF0495F9A2100000001217DA6C6B3E19F1825CFB2676DAECCE3BF3DE03CF26647C78DF00B371B25CC970000000020000000C4C63F80C74B11263E421EBF8486A4E398D0DBC09FA7D4F62CCDB309F3AEA81F0900000001217DA6C6B3E19F180100000004000000CAFED00D00000000000000000000000000000000FFFFFFFFFFFFFFFF".ToLower();
+            var expected = "c3398a599a6f3b9f30b635af29f2ba046d3a752c26e9d0647b9647d1f4c04ad420000000000000000100000002000000a71d76faa2d2d5c3224ec3d41deb293973564a791e55c6782ba76c2bf0495f9a2100000001217da6c6b3e19f1825cfb2676daecce3bf3de03cf26647c78df00b371b25cc9700000000c4c63f80c74b11263e421ebf8486a4e398d0dbc09fa7d4f62ccdb309f3aea81f0900000001217da6c6b3e19f180100000004000000cafed00d00000000000000000000000000000000ffffffffffffffff".ToLower();
             Assert.Equal(expected, actual);
         }
     }

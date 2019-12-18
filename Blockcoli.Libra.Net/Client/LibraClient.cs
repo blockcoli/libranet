@@ -45,11 +45,13 @@ namespace Blockcoli.Libra.Net.Client
         public async Task<ulong> MintWithFaucetService(string address, ulong amount)
         {
             var httpClient = new HttpClient();
-            var url = $"http://{FaucetServerHost}?amount={amount}&address={address}";            
-            var response = await httpClient.PostAsync(url, null);
+            var url = $"https://{FaucetServerHost}/api?module=faucet&action=getfaucet&amount={amount}&address={address}";                   
+            var response = await httpClient.GetAsync(url);
             if (response.StatusCode != HttpStatusCode.OK) throw new Exception($"Failed to query faucet service. Code: {response.StatusCode}");
-            var sequenceNumber = await response.Content.ReadAsStringAsync();
-            return ulong.Parse(sequenceNumber) - 1;
+            var json = await response.Content.ReadAsStringAsync();
+            var faucetResult = System.Text.Json.JsonSerializer.Deserialize<FaucetResult>(json);
+            if (faucetResult.Status != "1") throw new Exception($"Failed to query faucet service. Message: {faucetResult.Result}");
+            return ulong.Parse(faucetResult.Result);
         }
 
         public async Task<bool> TransferCoins(Account sender, string receiverAddress, ulong amount, ulong gasUnitPrice = 0, ulong maxGasAmount = 1000000)
@@ -58,34 +60,30 @@ namespace Blockcoli.Libra.Net.Client
             {
                 var accountState = await QueryBalance(sender.Address);
 
-                var program = new ProgramLCS();
-                program.Code = Convert.FromBase64String(Constant.ProgamBase64Codes.PeerToPeerTxn);
-                program.TransactionArguments = new List<TransactionArgumentLCS>();
-                program.TransactionArguments.Add(new TransactionArgumentLCS 
+                var payloadLCS = new PayloadLCS();
+                payloadLCS.Code = Convert.FromBase64String(Constant.ProgamBase64Codes.PeerToPeerTxn);
+                payloadLCS.TransactionArguments = new List<TransactionArgumentLCS>();
+                payloadLCS.TransactionArguments.Add(new TransactionArgumentLCS 
                 {  
                     ArgType = Types.TransactionArgument.Types.ArgType.Address,
                     Address = new AddressLCS { Value = receiverAddress }
                 });
-                program.TransactionArguments.Add(new TransactionArgumentLCS 
+                payloadLCS.TransactionArguments.Add(new TransactionArgumentLCS 
                 {  
                     ArgType = Types.TransactionArgument.Types.ArgType.U64,
                     U64 = amount
                 });
-                program.Modules = new List<byte[]>();
 
                 var transaction = new RawTransactionLCS
                 {
                     Sender = new AddressLCS { Value = sender.Address },
                     SequenceNumber = accountState.SequenceNumber,
-                    TransactionPayload = new TransactionPayloadLCS
-                    {
-                        PayloadType = TransactionPayloadType.Program,
-                        Program = program                    
-                    },
+                    TransactionPayload = TransactionPayloadLCS.FromScript(payloadLCS),
                     MaxGasAmount = maxGasAmount,
                     GasUnitPrice = gasUnitPrice,
                     ExpirationTime = (ulong)Math.Floor((decimal)DateTimeOffset.Now.ToUnixTimeMilliseconds() / 1000) + 100
-                };   
+                }; 
+
                 var transactionLCS = LCSCore.LCSDeserialization(transaction);
 
                 var digestSHA3 = new SHA3_256();
@@ -103,11 +101,11 @@ namespace Blockcoli.Libra.Net.Client
                                 
                 var request = new SubmitTransactionRequest
                 {
-                    SignedTxn = new SignedTransaction
+                    Transaction = new SignedTransaction
                     {                        
                         TxnBytes = txnBytes.ToByteString()
                     }
-                };                
+                };         
                 
                 var response = await acClient.SubmitTransactionAsync(request);
                 return response.AcStatus.Code == AdmissionControlStatusCode.Accepted;

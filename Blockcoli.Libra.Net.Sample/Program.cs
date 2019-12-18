@@ -59,8 +59,8 @@ namespace Blockcoli.Libra.Net.Sample
 						{
 							Console.Write("Amount (LIB) = ");
 							var amount = ulong.Parse(Console.ReadLine()) * 1000000;
-							var sequenceNumber = await client.MintWithFaucetService(wallet.Accounts[address].Address, amount);
-							Console.WriteLine($"Sequence Number = {sequenceNumber}");
+							var resultAmount = await client.MintWithFaucetService(wallet.Accounts[address].Address, amount);
+							Console.WriteLine($"Sequence Number = {resultAmount}");
 						}
 						else Console.WriteLine("Invalid address.");
 						break;

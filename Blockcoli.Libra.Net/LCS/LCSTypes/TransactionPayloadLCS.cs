@@ -33,5 +33,31 @@ namespace Blockcoli.Libra.Net.LCS
             retStr += "}";
             return retStr;
         }
+
+        public static TransactionPayloadLCS FromProgram(PayloadLCS payloadLCS)
+        {
+            var program = new ProgramLCS();
+            program.Code = payloadLCS.Code;
+            program.Modules = payloadLCS.Modules;
+            program.TransactionArguments = payloadLCS.TransactionArguments;
+            return new TransactionPayloadLCS
+            {
+                PayloadType = TransactionPayloadType.Program,
+                Program = program                    
+            };
+        }
+
+        public static TransactionPayloadLCS FromScript(PayloadLCS payloadLCS)
+        {
+            var script = new ScriptLCS();
+            script.Code = payloadLCS.Code;
+            script.Modules = payloadLCS.Modules;
+            script.TransactionArguments = payloadLCS.TransactionArguments;
+            return new TransactionPayloadLCS
+            {
+                PayloadType = TransactionPayloadType.Script,
+                Script = script                    
+            };
+        }
     }
 }

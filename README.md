@@ -3,9 +3,15 @@ Libra Wallet SDK for .NET
 
 Blockcoli Open-Source Project release The World 1st .NET SDK for Libra Wallet creating on Github repository and build to Nuget package manager. 
 
-Build from .NET Standard 2.0 and .NET Core 3.0
+Build from .NET Standard 2.0 and .NET Core 3.1
 
-Fix - Libra Canonical Serialization (LCS) for Transfer Coin https://github.com/libra/libra/blob/d54980c7fd8d40c9c3d215399b23bd55c263a188/common/canonical_serialization/README.md
+What's New
+- Update Proto
+- Change AccountStatePath
+- Change RawTransactionHashSalt
+- Transaction Payload Change from Program to ScriptLCS
+- Libra Client - SubmitTransactionRequest.SignedTxn => SubmitTransactionRequest.Transaction
+- Faucet change to LibExplorer API
 
 ## Installation
 To install with nuget run:
@@ -68,7 +74,7 @@ To mint you need to create a `LibraClient` and use it to mint
 var client = new LibraClient(LibraNetwork.Testnet);
 
 // Mint amout in Micro-Libra. (1 Libra = 1000000 Micro-Libra)
-var sequenceNumber = await client.MintWithFaucetService(account.Address, 1000000);
+var resualAmount = await client.MintWithFaucetService(account.Address, 1000000);
 ```
 
 ### Checking an address balance

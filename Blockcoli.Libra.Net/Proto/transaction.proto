@@ -8,7 +8,7 @@ package types;
 // import "Proto/access_path.proto";
 import "Proto/events.proto";
 import "Proto/proof.proto";
-import "Proto/transaction_info.proto";
+//import "Proto/transaction_info.proto";
 import "google/protobuf/wrappers.proto";
 
 // An argument to the transaction if the transaction takes arguments

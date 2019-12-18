@@ -75,6 +75,10 @@ namespace Blockcoli.Libra.Net.LCS
                     var writeSet = LCSCore.LCSDeserialization(source.WriteSet);
                     result = result.Concat(writeSet).ToArray();
                     break;
+                case TransactionPayloadType.Script:
+                    var sc = LCSCore.LCSDeserialization(source.Script);
+                    result = result.Concat(sc).ToArray();
+                    break;
             }
             return result;
         }
@@ -149,7 +153,16 @@ namespace Blockcoli.Libra.Net.LCS
 
         public byte[] ScriptToByte(ScriptLCS source)
         {
-            throw new NotImplementedException();
+            var result = ByteArrayToByte(source.Code);
+            var argLen = U32ToByte((uint)source.TransactionArguments.Count);
+            result = result.Concat(argLen).ToArray();
+            foreach (var arg in source.TransactionArguments)
+            {
+                var argData = LCSCore.LCSDeserialization(arg);
+                result = result.Concat(argData).ToArray();
+            }    
+
+            return result;
         }
 
         public byte[] ModuleToByte(ModuleLCS source)
