@@ -78,13 +78,8 @@ To mint an amount, you would need to create a `LibraClient` and use it to mint
 // Currently minting only works for testnet and uses the faucet service.
 var client = new LibraClient(LibraNetwork.Testnet);
 
-<<<<<<< HEAD
 // Mint amout in Micro-Libra. (1 Libra = 1000000 Micro-Libra)
 var resualAmount = await client.MintWithFaucetService(account.Address, 1000000);
-=======
-// Enter mint amount in Micro-Libra unit. (1 Libra = 1000000 Micro-Libra)
-var sequenceNumber = await client.MintWithFaucetService(account.Address, 1000000);
->>>>>>> 9ffd0fdb1d5ebc80f2a790b2cbc33819318c81eb
 ```
 
 ### Checking an address balance
