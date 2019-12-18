@@ -28,6 +28,7 @@
     <Folder Include="Crypto\" />
     <Folder Include="Proto\" />
     <Folder Include="Wallet\" />
+    <None Include="icon.jpg" Pack="true" PackagePath="\"/>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Google.Protobuf" Version="3.11.2" />
