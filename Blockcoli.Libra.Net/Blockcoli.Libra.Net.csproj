@@ -3,11 +3,11 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <PackageId>Blockcoli.Libra.Net</PackageId>
-    <Version>0.7.0</Version>
+    <Version>0.7.1</Version>
     <Authors>Blockcoli,CodeBangkok</Authors>
     <Description>Libra Wallet SDK for .NET</Description>
     <PackageDescription>Libra Wallet SDK for .NET</PackageDescription>
-    <PackageReleaseNotes>Update Proto | Change AccountStatePath | Change RawTransactionHashSalt | Transaction Payload Change from Program to ScriptLCS | Libra Client - SubmitTransactionRequest.SignedTxn | SubmitTransactionRequest.Transaction | Faucet change to LibExplorer API</PackageReleaseNotes>
+    <PackageReleaseNotes>Change Faucet Server</PackageReleaseNotes>
     <PackageTags>libra crypto wallet blockchain</PackageTags>
     <RepositoryUrl>https://github.com/blockcoli/libranet</RepositoryUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -28,16 +28,15 @@
     <Folder Include="Crypto\" />
     <Folder Include="Proto\" />
     <Folder Include="Wallet\" />
-    <None Include="icon.jpg" Pack="true" PackagePath="\"/>
+    <None Include="icon.jpg" Pack="true" PackagePath="\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Google.Protobuf" Version="3.11.2" />
-    <PackageReference Include="Grpc" Version="2.25.0" />
-    <PackageReference Include="Grpc.Tools" Version="2.25.0">
+    <PackageReference Include="Grpc" Version="2.26.0" />
+    <PackageReference Include="Grpc.Tools" Version="2.26.0">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="System.Text.Json" Version="4.7.0" />
   </ItemGroup>
     
   <ItemGroup>

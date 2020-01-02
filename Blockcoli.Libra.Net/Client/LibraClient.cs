@@ -45,13 +45,11 @@ namespace Blockcoli.Libra.Net.Client
         public async Task<ulong> MintWithFaucetService(string address, ulong amount)
         {
             var httpClient = new HttpClient();
-            var url = $"https://{FaucetServerHost}/api?module=faucet&action=getfaucet&amount={amount}&address={address}";                   
-            var response = await httpClient.GetAsync(url);
+            var url = $"http://{Constant.ServerHosts.TestnetFaucet}?amount={amount}&address={address}";                   
+            var response = await httpClient.PostAsync(url, null);
             if (response.StatusCode != HttpStatusCode.OK) throw new Exception($"Failed to query faucet service. Code: {response.StatusCode}");
-            var json = await response.Content.ReadAsStringAsync();
-            var faucetResult = System.Text.Json.JsonSerializer.Deserialize<FaucetResult>(json);
-            if (faucetResult.Status != "1") throw new Exception($"Failed to query faucet service. Message: {faucetResult.Result}");
-            return ulong.Parse(faucetResult.Result);
+            var sequenceNumber = await response.Content.ReadAsStringAsync();                        
+            return ulong.Parse(sequenceNumber);
         }
 
         public async Task<bool> TransferCoins(Account sender, string receiverAddress, ulong amount, ulong gasUnitPrice = 0, ulong maxGasAmount = 1000000)
