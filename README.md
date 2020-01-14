@@ -6,12 +6,7 @@ Blockcoli is an open source project which is the world 1st .NET SDK for creating
 Build from .NET Standard 2.0 and .NET Core 3.1
 
 What's New
-- Update Proto
-- Change AccountStatePath
-- Change RawTransactionHashSalt
-- Transaction Payload Change from Program to ScriptLCS
-- Libra Client - SubmitTransactionRequest.SignedTxn => SubmitTransactionRequest.Transaction
-- Faucet change to LibExplorer API
+- Change Faucet Server to LibExplorer
 
 ## Installation
 To install the nuget package from a command line, run:
