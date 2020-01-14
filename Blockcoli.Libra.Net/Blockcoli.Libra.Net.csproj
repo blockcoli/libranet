@@ -3,11 +3,11 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <PackageId>Blockcoli.Libra.Net</PackageId>
-    <Version>0.7.1</Version>
+    <Version>0.7.2</Version>
     <Authors>Blockcoli,CodeBangkok</Authors>
     <Description>Libra Wallet SDK for .NET</Description>
     <PackageDescription>Libra Wallet SDK for .NET</PackageDescription>
-    <PackageReleaseNotes>Change Faucet Server</PackageReleaseNotes>
+    <PackageReleaseNotes>Change Faucet Server to LibExplorer</PackageReleaseNotes>
     <PackageTags>libra crypto wallet blockchain</PackageTags>
     <RepositoryUrl>https://github.com/blockcoli/libranet</RepositoryUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -37,6 +37,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="System.Text.Json" Version="4.7.0" />
   </ItemGroup>
     
   <ItemGroup>
