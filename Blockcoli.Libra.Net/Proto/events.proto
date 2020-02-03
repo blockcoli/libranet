@@ -22,18 +22,14 @@ message Event {
 
 // An event along with the proof for the event
 message EventWithProof {
-uint64 transaction_version = 1;
-uint64 event_index = 2;
-Event event = 3;
-EventProof proof = 4;
+  uint64 transaction_version = 1;
+  uint64 event_index = 2;
+  Event event = 3;
+  EventProof proof = 4;
 }
 
 // A list of events.
-message EventsList {
-repeated Event events = 1;
-}
+message EventsList { repeated Event events = 1; }
 
 // A list of EventList's, each representing all events for a transaction.
-message EventsForVersions {
-  repeated EventsList events_for_version = 1;
-}
+message EventsForVersions { repeated EventsList events_for_version = 1; }

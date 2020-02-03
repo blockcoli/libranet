@@ -3,11 +3,11 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <PackageId>Blockcoli.Libra.Net</PackageId>
-    <Version>0.7.3</Version>
+    <Version>0.7.4</Version>
     <Authors>Blockcoli,CodeBangkok</Authors>
     <Description>Libra Wallet SDK for .NET</Description>
     <PackageDescription>Libra Wallet SDK for .NET</PackageDescription>
-    <PackageReleaseNotes>Change PeerToPeerTxn</PackageReleaseNotes>
+    <PackageReleaseNotes>Update Proto file</PackageReleaseNotes>
     <PackageTags>libra crypto wallet blockchain</PackageTags>
     <RepositoryUrl>https://github.com/blockcoli/libranet</RepositoryUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>

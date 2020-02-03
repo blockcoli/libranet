@@ -3,10 +3,8 @@ Libra Wallet SDK for .NET
 
 Blockcoli is an open source project which is the world 1st .NET SDK for creating Libra wallet. It is hosted on Github repository and also built as a Nuget package. 
 
-Build from .NET Standard 2.0 and .NET Core 3.1
-
 What's New
-- Change PeerToPeerTxn
+- Update Proto file
 
 ## Installation
 To install the nuget package from a command line, run:

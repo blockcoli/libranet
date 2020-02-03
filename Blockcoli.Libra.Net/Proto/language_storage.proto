@@ -9,4 +9,4 @@ package types;
 message ModuleId {
     bytes address = 1;
     string name = 2;
-}
+  }

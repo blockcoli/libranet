@@ -30,4 +30,4 @@ message VMStatus {
     uint64 sub_status = 3;
     bool has_message = 4;
     string message = 5;
-}
+  }

@@ -137,179 +137,180 @@ message UpdateToLatestLedgerRequest {
     // chain. If this is the first time ever the client sends a request, it must
     // use the waypoint hard-coded in its software.
     uint64 client_known_version = 1;
-
+  
     // The items for which we are requesting data in this API call.
     repeated RequestItem requested_items = 2;
-}
-
-message RequestItem {
+  }
+  
+  message RequestItem {
     oneof requested_items {
-        GetAccountStateRequest get_account_state_request = 1;
-        GetAccountTransactionBySequenceNumberRequest
-        get_account_transaction_by_sequence_number_request = 2;
-        GetEventsByEventAccessPathRequest get_events_by_event_access_path_request =
-        3;
-        GetTransactionsRequest get_transactions_request = 4;
+      GetAccountStateRequest get_account_state_request = 1;
+      GetAccountTransactionBySequenceNumberRequest
+          get_account_transaction_by_sequence_number_request = 2;
+      GetEventsByEventAccessPathRequest get_events_by_event_access_path_request =
+          3;
+      GetTransactionsRequest get_transactions_request = 4;
     }
-}
-
-// -----------------------------------------------------------------------------
-// ---------------- Update to latest ledger response
-// -----------------------------------------------------------------------------
-
-// Response from getting latest ledger
-message UpdateToLatestLedgerResponse {
+  }
+  
+  // -----------------------------------------------------------------------------
+  // ---------------- Update to latest ledger response
+  // -----------------------------------------------------------------------------
+  
+  // Response from getting latest ledger
+  message UpdateToLatestLedgerResponse {
     // Responses to the queries posed by the requests. The proofs generated will
     // be relative to the version of the latest ledger provided below.
     repeated ResponseItem response_items = 1;
-
+  
     // The latest ledger info this node has. It will come with at least 2f+1
     // validator signatures as well as a proof that shows the latest ledger
     // extends the old ledger the client had.
     LedgerInfoWithSignatures ledger_info_with_sigs = 2;
-
+  
     // A proof for Validator changes from what the client last knew. This is
     // used to inform the client of validator changes from the client's last
     // known version until the current version.
     ValidatorChangeProof validator_change_proof = 3;
-
+  
     // A proof that shows the latest ledger accumulator is consistent with the
     // old accumulator at "client_known_version".
     AccumulatorConsistencyProof ledger_consistency_proof = 4;
-}
-
-// Individual response items to the queries posed by the requests
-message ResponseItem {
+  }
+  
+  // Individual response items to the queries posed by the requests
+  message ResponseItem {
     oneof response_items {
-        GetAccountStateResponse get_account_state_response = 3;
-        GetAccountTransactionBySequenceNumberResponse
-            get_account_transaction_by_sequence_number_response = 4;
-        GetEventsByEventAccessPathResponse get_events_by_event_access_path_response = 5;
-        GetTransactionsResponse get_transactions_response = 6;
+      GetAccountStateResponse get_account_state_response = 3;
+      GetAccountTransactionBySequenceNumberResponse
+          get_account_transaction_by_sequence_number_response = 4;
+      GetEventsByEventAccessPathResponse
+          get_events_by_event_access_path_response = 5;
+      GetTransactionsResponse get_transactions_response = 6;
     }
-}
-
-// -----------------------------------------------------------------------------
-// ---------------- Get account state (balance, sequence number, etc.)
-// -----------------------------------------------------------------------------
-
-// Gets latest state for an account.
-message GetAccountStateRequest {
+  }
+  
+  // -----------------------------------------------------------------------------
+  // ---------------- Get account state (balance, sequence number, etc.)
+  // -----------------------------------------------------------------------------
+  
+  // Gets latest state for an account.
+  message GetAccountStateRequest {
     // Account for which we are fetching the state.
     bytes address = 1;
-}
-
-// State information returned by a get account state query.
-message GetAccountStateResponse {
+  }
+  
+  // State information returned by a get account state query.
+  message GetAccountStateResponse {
     // Blob value representing the account state together with proof the client
     // can utilize to verify it.
     AccountStateWithProof account_state_with_proof = 1;
-}
-
-// -----------------------------------------------------------------------------
-// ---------------- Get single transaction by account + sequence number
-// -----------------------------------------------------------------------------
-// Get transactions that altered an account - this includes both sent and
-// received. A user of this should check that the data returned matches what
-// they expect.  As an example, a potential attack vector would be something
-// like the following: Alice is buying an apple from Bob. Alice's phone signs a
-// transaction X with sequence number N that pays coins to Bob. Alice transmits
-// this signature to Bob's payment terminal which then submits the transaction
-// and checks its status to see if Alice can be given the apple. However, as Bob
-// is doing this Alice constructs a second transaction X' also with sequence
-// number N. Alice gets that transaction inserted in the blockchain. If Bob
-// isn't thoughtful about how he uses this API he may assume that if he asks for
-// the N'th transaction on Alice's account that when the API returns that this
-// means the transaction has gone through. The point here is that one should be
-// careful in reading too much into "transaction X is on the chain" and focus on
-// the logs, which tell you what the transaction did.
-//
-// If a client submitted a transaction, they should also verify that the hash of
-// the returned transaction matches what they submitted.  As an example, if a
-// client has two wallets that share the same account, they may both submit a
-// transaction at the same sequence number and only one will be committed.  A
-// client should never assume that if they receive the response that this
-// transaction was included that it means that this is definitely the
-// transaction that was submitted.  They should check that the hash matches what
-// they sent
-message GetAccountTransactionBySequenceNumberRequest {
+  }
+  
+  // -----------------------------------------------------------------------------
+  // ---------------- Get single transaction by account + sequence number
+  // -----------------------------------------------------------------------------
+  // Get transactions that altered an account - this includes both sent and
+  // received. A user of this should check that the data returned matches what
+  // they expect.  As an example, a potential attack vector would be something
+  // like the following: Alice is buying an apple from Bob. Alice's phone signs a
+  // transaction X with sequence number N that pays coins to Bob. Alice transmits
+  // this signature to Bob's payment terminal which then submits the transaction
+  // and checks its status to see if Alice can be given the apple. However, as Bob
+  // is doing this Alice constructs a second transaction X' also with sequence
+  // number N. Alice gets that transaction inserted in the blockchain. If Bob
+  // isn't thoughtful about how he uses this API he may assume that if he asks for
+  // the N'th transaction on Alice's account that when the API returns that this
+  // means the transaction has gone through. The point here is that one should be
+  // careful in reading too much into "transaction X is on the chain" and focus on
+  // the logs, which tell you what the transaction did.
+  //
+  // If a client submitted a transaction, they should also verify that the hash of
+  // the returned transaction matches what they submitted.  As an example, if a
+  // client has two wallets that share the same account, they may both submit a
+  // transaction at the same sequence number and only one will be committed.  A
+  // client should never assume that if they receive the response that this
+  // transaction was included that it means that this is definitely the
+  // transaction that was submitted.  They should check that the hash matches what
+  // they sent
+  message GetAccountTransactionBySequenceNumberRequest {
     // Account for which to query transactions
     bytes account = 1;
-
+  
     uint64 sequence_number = 2;
-
+  
     // Set to true to fetch events for the transaction at this version
     bool fetch_events = 3;
-}
-
-// Transaction information for transactions requested by
-// GetAccountTransactionsRequest
-message GetAccountTransactionBySequenceNumberResponse {
-  // When the transaction requested is committed, return the committed
-  // transaction with proof.
-  TransactionWithProof transaction_with_proof = 2;
-  // When the transaction requested is not committed, we give a proof that
-  // shows the current sequence number is smaller than what would have been if
-  // the transaction was committed.
-  AccountStateWithProof proof_of_current_sequence_number = 3;
-}
-
-// -----------------------------------------------------------------------------
-// ---------------- Get events by event access path
-// -----------------------------------------------------------------------------
-
-// Get events that exist on an event access path.  In the current world,
-// a user may specify events that were received, events that were sent, or any
-// event that modifies their account
-message GetEventsByEventAccessPathRequest {
+  }
+  
+  // Transaction information for transactions requested by
+  // GetAccountTransactionsRequest
+  message GetAccountTransactionBySequenceNumberResponse {
+    // When the transaction requested is committed, return the committed
+    // transaction with proof.
+    TransactionWithProof transaction_with_proof = 2;
+    // When the transaction requested is not committed, we give a proof that
+    // shows the current sequence number is smaller than what would have been if
+    // the transaction was committed.
+    AccountStateWithProof proof_of_current_sequence_number = 3;
+  }
+  
+  // -----------------------------------------------------------------------------
+  // ---------------- Get events by event access path
+  // -----------------------------------------------------------------------------
+  
+  // Get events that exist on an event access path.  In the current world,
+  // a user may specify events that were received, events that were sent, or any
+  // event that modifies their account
+  message GetEventsByEventAccessPathRequest {
     AccessPath access_path = 1;
-
+  
     // The sequence number of the event to start with for this query. Use a
     // sequence number of MAX_INT to represent the latest.
     uint64 start_event_seq_num = 2;
-
+  
     // If ascending is true this query will return up to `limit` events that were
     // emitted after `start_event_seq_num`. Otherwise it will return up to `limit`
     // events before the offset. Both cases are inclusive.
     bool ascending = 3;
-
+  
     // Limit number of results
     uint64 limit = 4;
-}
-
-message GetEventsByEventAccessPathResponse {
+  }
+  
+  message GetEventsByEventAccessPathResponse {
     // Returns an event and proof of each of the events in the request. The first
     // element of proofs will be the closest to `start_event_seq_num`.
     repeated EventWithProof events_with_proof = 1;
-
+  
     // If the number of events returned is less than `limit` for an ascending
     // query or if start_event_seq_num > the latest seq_num for a descending
-    // query,  returns the state of the account containing the given access path
+    // query, returns the state of the account containing the given access path
     // in the latest state. This allows the client to verify that there are in
     // fact no extra events.
     //
     // The LedgerInfoWithSignatures which is on the main
     // UpdateToLatestLedgerResponse can be used to validate this.
     AccountStateWithProof proof_of_latest_event = 2;
-}
-
-// -----------------------------------------------------------------------------
-// ---------------- Get transactions
-// -----------------------------------------------------------------------------
-
-// Get up to limit transactions starting from start_version.
-message GetTransactionsRequest {
+  }
+  
+  // -----------------------------------------------------------------------------
+  // ---------------- Get transactions
+  // -----------------------------------------------------------------------------
+  
+  // Get up to limit transactions starting from start_version.
+  message GetTransactionsRequest {
     // The version of the transaction to start with for this query.  Use a version
     // of MAX_INT to represent the latest.
     uint64 start_version = 1;
-
+  
     // Limit number of results
     uint64 limit = 2;
-
+  
     // Set to true to fetch events for the transaction at each version
     bool fetch_events = 3;
-}
-
-message GetTransactionsResponse {
+  }
+  
+  message GetTransactionsResponse {
     TransactionListWithProof txn_list_with_proof = 1;
-}
+  }
